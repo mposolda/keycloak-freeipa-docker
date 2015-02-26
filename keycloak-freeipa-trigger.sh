@@ -57,14 +57,9 @@ sed -i -e "s/\${password}/$PASSWORD/" /keycloak-work/freeipa-realm.json
 echo "keycloak-freeipa-trigger.sh: File formatting finished. Final file: ";
 cat /keycloak-work/freeipa-realm.json
 
-echo "keycloak-freeipa-trigger.sh: Preparing keycloak";
-cd /keycloak-work
-unzip -q /keycloak-volume/keycloak-appliance-dist*.zip 
-mv /keycloak-work/keycloak-appliance-dist*/keycloak kc
-cd /keycloak-work/kc/bin
-
 
 echo "keycloak-freeipa-trigger.sh: Running keycloak";
+cd /keycloak-work/kc/bin
 ./standalone.sh -b 0.0.0.0 -Djboss.http.port=9080 -Dkeycloak.import=/keycloak-work/freeipa-realm.json &
 
 
