@@ -7,6 +7,11 @@ Then it will configure Keycloak server to use FreeIPA LDAP server as Federation 
 
 In order to have the image running, you need to do these steps:
 
+Building docker image
+---------------------
+If you want, you can build docker image by yourself. But you can skip this step and use pre-builded image `mposolda/keycloak-freeipa-server` . If you're going to build it by yourself you need to:
+
+
 1. Install docker on your laptop. If you want, you can build docker image by yourself with command:
 
 ```

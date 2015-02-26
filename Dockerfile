@@ -3,6 +3,7 @@ FROM adelton/freeipa-server:fedora-20
 RUN yum install -y unzip && yum clean all
 
 RUN mkdir /keycloak-work
+ADD keycloak-appliance-dist*.zip /keycloak-work/keycloak-appliance-dist.zip
 ADD freeipa-realm.json /keycloak-work/freeipa-realm.json
 ADD keycloak-freeipa-trigger.sh /keycloak-work/keycloak-freeipa-trigger.sh
 
