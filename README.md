@@ -74,7 +74,7 @@ For Chrome, you just need to run the browser with command similar to this (more 
 /usr/bin/google-chrome-stable --auth-server-whitelist="ipa.example.test"
 ```
 
-**5)** Test the integration. First ensure that you have Kerberos ticket available for the FreeIPA EXAMPLE.TEST kerberos realm. In most OS you can achieve this by running command from CMD like:
+**5)** Test the integration. First ensure that you have Kerberos ticket available for the FreeIPA EXAMPLE.TEST kerberos realm. In many OS you can achieve this by running command from CMD like:
 
 ```
 kinit hnelson@EXAMPLE.TEST
