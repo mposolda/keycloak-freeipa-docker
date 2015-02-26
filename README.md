@@ -3,7 +3,7 @@ Keycloak and FreeIPA docker image
 
 This docker image will setup FreeIPA environment on Fedora 20 and add some example users to FreeIPA. 
 
-Then it will configure Keycloak server to use FreeIPA LDAP server as Federation provider and it will enable Kerberos/SPNEGO authentication for Keycloak.
+Image also contains Keycloak server and it will configure it to use FreeIPA LDAP server as Federation provider and it will enable Kerberos/SPNEGO authentication for Keycloak. In order to participate in Kerberos/SPNEGO you still need to do few steps on your laptop - configure Kerberos client and web browser.
 
 In order to have the image running, you need to do these steps:
 
@@ -27,17 +27,21 @@ Running docker image
 
 **1)** Install docker on your laptop if you not already have it. Then run docker image `mposolda/keycloak-freeipa-server`. You need to expose kerberos ports and also HTTP port of Keycloak server. It's also good to expose LDAP server port (so you can connect remotely to LDAP), Keycloak debugger port (if you want remote Keycloak debugging from your IDE) and Apache HTTPD port (just for case you want to remotely connect to FreeIPA).
 
+More lines are just for easier readability, but whole command should be single line:
+
 ```
-docker run --name keycloak-freeipa-server-container -ti -h ipa.example.test -e PASSWORD=SomePassword123 -p 20088:88 -p 20088:88/udp -p 29080:9080 -p 20389:389 -p 28787:8787 -p 20080:80
+docker run --name keycloak-freeipa-server-container -ti -h ipa.example.test 
+-e PASSWORD=SomePassword123 -p 20088:88 -p 20088:88/udp -p 29080:9080 
+-p 20389:389 -p 28787:8787 -p 20080:80 mposolda/keycloak-freeipa-server
 ```
 
-**2)** You will need to access keycloak via `ipa.example.test` server as this matches to HTTP service kerberos principal. In linux you can just put this line to `/etc/hosts` file:
+**2)** You will need to access keycloak via `ipa.example.test` server as this matches to HTTP service kerberos principal. In linux you can just put this line to `/etc/hosts` file (on your machine, not docker container):
 
 ```
 127.0.0.1   ipa.example.test
 ```
 
-**3)** If you want your web browser to participate in Kerberos authentication, you need to configure Kerberos client. You should first install Kerberos client on your machine (This is platform dependent, so consult documentation of your OS on how to do it. On Fedora, Ubuntu or RHEL you can install just package `freeipa-client`, which installs kerberos client, LDAP client and bunch of other stuff. 
+**3)** If you want your web browser to participate in Kerberos authentication, you need to configure Kerberos client. You should first install Kerberos client on your machine. This is platform dependent, so consult documentation of your OS on how to do it. On Fedora, Ubuntu or RHEL you can install just package `freeipa-client`, which installs kerberos client, LDAP client and bunch of other stuff. 
 
 Once client is installed, you can configure Kerberos client configuration file (on Linux it's in `/etc/krb5.conf` ) similarly like this:
 
@@ -85,9 +89,9 @@ klist
 
 that you have ticket for user `hnelson`
 
-Now you can simply visit this URL from your browser [http://ipa.example.test:29080/auth/realms/freeipa/account/](http://ipa.example.test:29080/auth/realms/freeipa/account/) and you should be logged in automatically as hnelson in Keycloak account management. You can change you firstName/lastName/email or you can also change your password. Password change will be propagated to LDAP and hence Kerberos too, so next time you can obtain kerberos ticket via kinit with new password.
+Now you can simply visit this URL from your browser [http://ipa.example.test:29080/auth/realms/freeipa/account/](http://ipa.example.test:29080/auth/realms/freeipa/account/) and you should be logged in automatically as hnelson in Keycloak account management. You can change you firstName/lastName/email or you can also change your password. Password change will be propagated to LDAP and hence Kerberos too, so next time you can obtain kerberos ticket via kinit with the new password.
 
-Other users for test are:
+Other testing users are:
 `jduke` with password `Secret123` or `admin` with password `SomePassword123` (as long as you didn't change PASSWORD variable in "docker run" command above) .
 
 
