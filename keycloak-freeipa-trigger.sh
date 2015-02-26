@@ -57,6 +57,12 @@ sed -i -e "s/\${password}/$PASSWORD/" /keycloak-work/freeipa-realm.json
 echo "keycloak-freeipa-trigger.sh: File formatting finished. Final file: ";
 cat /keycloak-work/freeipa-realm.json
 
+# Done here instead of in Dockerfile just due to size of the image
+echo "keycloak-freeipa-trigger.sh: Preparing keycloak";
+cd /keycloak-work 
+unzip -q /keycloak-work/appliance-dist/keycloak-appliance-dist*.zip 
+mv /keycloak-work/keycloak-appliance-dist*/keycloak kc
+
 
 echo "keycloak-freeipa-trigger.sh: Running keycloak";
 cd /keycloak-work/kc/bin

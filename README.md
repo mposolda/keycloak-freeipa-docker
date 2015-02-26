@@ -94,6 +94,8 @@ Now you can simply visit this URL from your browser [http://ipa.example.test:290
 Other testing users are:
 `jduke` with password `Secret123` or `admin` with password `SomePassword123` (as long as you didn't change PASSWORD variable in "docker run" command above) .
 
+To check the configuration of federation provider, go to [http://ipa.example.test:29080/auth/admin](http://ipa.example.test:29080/auth/admin) , login as admin/admin and verify how is Federation provider configured.
+
 
 
 
