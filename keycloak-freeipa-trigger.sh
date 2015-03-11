@@ -23,24 +23,30 @@ echo "keycloak-freeipa-trigger.sh: Running ipa-server-configure-first";
 echo "keycloak-freeipa-trigger.sh: ipa-server-configure-first finished";
 
 echo $PASSWORD | kinit admin
-ipa user-add hnelson --first=Horatio --last=Nelson
-echo "Temp123
-Temp123" | ipa passwd hnelson
-echo "Temp123
+if ipa user-find hnelson; then
+   kdestroy
+   echo "keycloak-freeipa-trigger.sh: Example users hnelson and jduke already exists. Skip adding them";   
+else 
+   ipa user-add hnelson --first=Horatio --last=Nelson
+   echo "Temp123
+   Temp123" | ipa passwd hnelson
+   echo "Temp123
 Secret123
 Secret123" | kinit hnelson
-kdestroy
+   kdestroy
 
-echo $PASSWORD | kinit admin
-ipa user-add jduke --first=Java --last=Duke
-echo "Temp123
-Temp123" | ipa passwd jduke
-echo "Temp123
+   echo $PASSWORD | kinit admin
+   ipa user-add jduke --first=Java --last=Duke
+   echo "Temp123
+   Temp123" | ipa passwd jduke
+   echo "Temp123
 Secret123
 Secret123" | kinit jduke
-kdestroy
+   kdestroy
 
-echo "keycloak-freeipa-trigger.sh: Example users hnelson and jduke added to freeipa";
+   echo "keycloak-freeipa-trigger.sh: Example users hnelson and jduke added to freeipa";
+fi;
+
 
 export HOST=$(hostname -f)
 export LDAP_BASE_DN=$(hostname -f | sed s/[^\\.]*\\././ | sed s/\\./,dc=/g | sed s/,//)
@@ -58,11 +64,14 @@ echo "keycloak-freeipa-trigger.sh: File formatting finished. Final file: ";
 cat /keycloak-work/freeipa-realm.json
 
 # Done here instead of in Dockerfile just due to size of the image
-echo "keycloak-freeipa-trigger.sh: Preparing keycloak";
-cd /keycloak-work 
-unzip -q /keycloak-work/appliance-dist/keycloak-appliance-dist*.zip 
-mv /keycloak-work/keycloak-appliance-dist*/keycloak kc
-
+if ls /keycloak-work/keycloak-appliance-dist* ; then
+  echo "keycloak-freeipa-trigger.sh: Keycloak already prepared. Skip preparing";
+else
+  echo "keycloak-freeipa-trigger.sh: Preparing keycloak";
+  cd /keycloak-work 
+  unzip -q /keycloak-work/appliance-dist/keycloak-appliance-dist*.zip 
+  mv /keycloak-work/keycloak-appliance-dist*/keycloak kc
+fi;
 
 echo "keycloak-freeipa-trigger.sh: Running keycloak";
 cd /keycloak-work/kc/bin

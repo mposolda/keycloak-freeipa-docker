@@ -96,6 +96,18 @@ Other testing users are:
 
 To check the configuration of federation provider, go to [http://ipa.example.test:29080/auth/admin](http://ipa.example.test:29080/auth/admin) , login as admin/admin and verify how is Federation provider configured.
 
+**6** You can stop the docker container by running command:
+```
+exit
+```
+
+from the interactive terminal with docker. Then to start it again, you can use:
+```
+docker start -ai keycloak-freeipa-server-container
+```
+
+The startup will be quite fast as FreeIPA and Keycloak are already finished now.
+
 
 
 
