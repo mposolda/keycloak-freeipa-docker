@@ -64,13 +64,13 @@ echo "keycloak-freeipa-trigger.sh: File formatting finished. Final file: ";
 cat /keycloak-work/freeipa-realm.json
 
 # Done here instead of in Dockerfile just due to size of the image
-if ls /keycloak-work/keycloak-appliance-dist* ; then
+if ls /keycloak-work/keycloak-demo* ; then
   echo "keycloak-freeipa-trigger.sh: Keycloak already prepared. Skip preparing";
 else
   echo "keycloak-freeipa-trigger.sh: Preparing keycloak";
   cd /keycloak-work 
-  unzip -q /keycloak-work/appliance-dist/keycloak-appliance-dist*.zip 
-  mv /keycloak-work/keycloak-appliance-dist*/keycloak kc
+  tar xf /keycloak-work/keycloak-dist/keycloak-demo*.tar.gz
+  mv /keycloak-work/keycloak-demo*/keycloak kc
 fi;
 
 echo "keycloak-freeipa-trigger.sh: Running keycloak";

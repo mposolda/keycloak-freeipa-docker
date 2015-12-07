@@ -9,9 +9,9 @@ In order to have the image running, you need to do these steps:
 
 Building docker image
 ---------------------
-If you want, you can build docker image by yourself. But you can skip this step and use pre-builded image `mposolda/keycloak-freeipa-server` . If you're going to build it by yourself you need to:
+If you want, you can build docker image by yourself. But you can skip this step and use pre-builded image `mposolda/keycloak-freeipa-server:1.7.0.CR1` . If you're going to build it by yourself you need to:
 
-**1** Download keycloak-appliance ZIP distribution of version 1.2.0.Beta1 or newer and put this ZIP file to subdirectory `appliance-dist`
+**1** Download keycloak-demo ZIP distribution of version 1.7.0.CR1 or newer and put this ZIP file to subdirectory `keycloak-dist`
 
 **2)**  Install docker on your laptop if you not already have it. Then if you want, you can build docker image by yourself with command:
 
@@ -19,20 +19,24 @@ If you want, you can build docker image by yourself. But you can skip this step 
 docker build -t keycloak-freeipa-server .
 ```
 
-So if you followed this and build the image by yourself, replace image name `mposolda/keycloak-freeipa-server` with your name `keycloak-freeipa-server` in later steps. 
+So if you followed this and build the image by yourself, replace image name `mposolda/keycloak-freeipa-server:1.7.0.CR1` with your name `keycloak-freeipa-server` in later steps. 
 
 
 Running docker image
 --------------------
 
-**1)** Install docker on your laptop if you not already have it. Then run docker image `mposolda/keycloak-freeipa-server`. You need to expose kerberos ports and also HTTP port of Keycloak server. It's also good to expose LDAP server port (so you can connect remotely to LDAP) and Keycloak debugger port (if you want remote Keycloak debugging from your IDE).
+**1)** Install docker on your laptop if you not already have it. Then run docker image `mposolda/keycloak-freeipa-server:1.7.0.CR1`. You need to expose kerberos ports 
+and also HTTP port of Keycloak server. It's also good to expose LDAP server port (so you can connect remotely to LDAP) and Keycloak debugger port (if you want remote Keycloak debugging 
+from your IDE).
+
+Also you can add some stuff to directory `/tmp/ipa-data` if you want. See [https://github.com/adelton/docker-freeipa/blob/fedora-20/README](https://github.com/adelton/docker-freeipa/blob/fedora-20/README) for details. 
 
 More lines are just for easier readability, but whole command should be single line:
 
 ```
 docker run --name keycloak-freeipa-server-container -ti -h ipa.example.test 
--e PASSWORD=SomePassword123 -p 20088:88 -p 20088:88/udp -p 29080:9080 
--p 20389:389 -p 28787:8787 mposolda/keycloak-freeipa-server
+-e PASSWORD=Secret123 -v /tmp/ipa-data:/data -p 20088:88 -p 20088:88/udp -p 29080:9080 
+-p 20389:389 -p 28787:8787 mposolda/keycloak-freeipa-server:1.7.0.CR1
 ```
 
 **2)** You will need to access keycloak via `ipa.example.test` server as this matches to HTTP service kerberos principal. In linux you can just put this line to `/etc/hosts` file (on your machine, not docker container):
@@ -64,9 +68,9 @@ Once client is installed, you can configure Kerberos client configuration file (
   example.test = EXAMPLE.TEST  
 ```
 
-**4)** Finally configure your browser to participate in Kerberos/SPNEGO authentication flow. You need to allow domain `.example.test` to be trusted. Exact steps are again browser dependent. 
+**4)** Finally configure your browser to participate in Kerberos/SPNEGO authentication flow. You need to allow domain `ipa.example.test` to be trusted. Exact steps are again browser dependent. 
 
-For Firefox see for example [http://www.microhowto.info/howto/configure_firefox_to_authenticate_using_spnego_and_kerberos.html](http://www.microhowto.info/howto/configure_firefox_to_authenticate_using_spnego_and_kerberos.html) . URI `.example.test` must be allowed in `network.negotiate-auth.trusted-uris` config option. 
+For Firefox see for example [http://www.microhowto.info/howto/configure_firefox_to_authenticate_using_spnego_and_kerberos.html](http://www.microhowto.info/howto/configure_firefox_to_authenticate_using_spnego_and_kerberos.html) . URI `ipa.example.test` must be allowed in `network.negotiate-auth.trusted-uris` config option. 
 
 For Chrome, you just need to run the browser with command similar to this (more details in Chrome documentation):
 
@@ -92,7 +96,7 @@ that you have ticket for user `hnelson`
 Now you can simply visit this URL from your browser [http://ipa.example.test:29080/auth/realms/freeipa/account/](http://ipa.example.test:29080/auth/realms/freeipa/account/) and you should be logged in automatically as hnelson in Keycloak account management. You can change you firstName/lastName/email or you can also change your password. Password change will be propagated to LDAP and hence Kerberos too, so next time you can obtain kerberos ticket via kinit with the new password.
 
 Other testing users are:
-`jduke` with password `Secret123` or `admin` with password `SomePassword123` (as long as you didn't change PASSWORD variable in "docker run" command above) .
+`jduke` with password `Secret123` or `admin` with password `Secret123` (as long as you didn't change PASSWORD variable in "docker run" command above) .
 
 To check the configuration of federation provider, go to [http://ipa.example.test:29080/auth/admin](http://ipa.example.test:29080/auth/admin) , login as admin/admin and verify how is Federation provider configured.
 
