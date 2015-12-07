@@ -93,12 +93,24 @@ klist
 
 that you have ticket for user `hnelson`
 
-Now you can simply visit this URL from your browser [http://ipa.example.test:29080/auth/realms/freeipa/account/](http://ipa.example.test:29080/auth/realms/freeipa/account/) and you should be logged in automatically as hnelson in Keycloak account management. You can change you firstName/lastName/email or you can also change your password. Password change will be propagated to LDAP and hence Kerberos too, so next time you can obtain kerberos ticket via kinit with the new password.
+Now you can simply visit this URL from your browser [http://ipa.example.test:29080/auth/realms/freeipa/account/](http://ipa.example.test:29080/auth/realms/freeipa/account/) and you should 
+be logged in automatically as `hnelson` user in Keycloak account management.
 
 Other testing users are:
 `jduke` with password `Secret123` or `admin` with password `Secret123` (as long as you didn't change PASSWORD variable in "docker run" command above) .
 
 To check the configuration of federation provider, go to [http://ipa.example.test:29080/auth/admin](http://ipa.example.test:29080/auth/admin) , login as admin/admin and verify how is Federation provider configured.
+You can also click `Sync all users` to sync all FreeIPA users into Keycloak (otherwise they are synced during their first login).
+
+The Federation provider is configured to be WRITABLE, which means that updating any attribute of user in Keycloak (For example changing firstName of user `hnelson` to `Homer` ) will be propagated to LDAP as well.
+However registration of new users in Keycloak FreeIPA realm won't add users to FreeIPA LDAP, because `syncRegistration` flag is disabled on Federation provider configuration.
+ 
+Among other mappers, you can see `IPA groups mapper` configured for federation provider. This maps FreeIPA groups from `cn=groups,cn=accounts,dc=example,dc=test` to Keycloak realm roles of `freeipa` realm.
+Creating new role in Keycloak will create new Group into FreeIPA LDAP as well. Also create/remove any membership from Keycloak should work as expected. 
+
+Mappers are configured the way, so that when changing things on FreeIPA/LDAP side, the changes should be immediatelly visible on Keycloak side too.
+ 
+ 
 
 **6** You can stop the docker container by running command:
 ```
