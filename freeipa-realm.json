@@ -130,7 +130,7 @@
         "federationProviderDisplayName" : "freeipa-ldap",
         "federationMapperType" : "role-ldap-mapper",
         "config" : {
-          "roles.dn" : "cn=groups,cn=accounts,dc=example,dc=test",
+          "roles.dn" : "cn=groups,cn=accounts,${ldapBaseDn}",
           "use.realm.roles.mapping" : "true",
           "membership.ldap.attribute" : "member",
           "role.object.classes" : "ipaobject,ipausergroup",
