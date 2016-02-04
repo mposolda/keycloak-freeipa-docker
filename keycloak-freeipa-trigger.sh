@@ -73,8 +73,13 @@ else
   mv /keycloak-work/keycloak-demo*/keycloak kc
 fi;
 
+echo "Set Java 8 as default java"
+export JAVA_HOME="/keycloak-work/keycloak-dist/openjdk8";
+export PATH="$JAVA_HOME/bin:$PATH";
+
 echo "keycloak-freeipa-trigger.sh: Running keycloak";
 cd /keycloak-work/kc/bin
+./add-user-keycloak.sh -r master -u admin -p admin
 ./standalone.sh -b 0.0.0.0 -Djboss.http.port=9080 -Dkeycloak.import=/keycloak-work/freeipa-realm.json &
 
 

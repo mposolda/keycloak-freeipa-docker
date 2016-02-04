@@ -9,23 +9,25 @@ In order to have the image running, you need to do these steps:
 
 Building docker image
 ---------------------
-If you want, you can build docker image by yourself. But you can skip this step and use pre-builded image `mposolda/keycloak-freeipa-server:1.7.0.CR1` . If you're going to build it by yourself you need to:
+If you want, you can build docker image by yourself. But you can skip this step and use pre-builded image `mposolda/keycloak-freeipa-server:1.9.0.CR1` . If you're going to build it by yourself you need to:
 
-**1** Download keycloak-demo ZIP distribution of version 1.7.0.CR1 or newer and put this ZIP file to subdirectory `keycloak-dist`
+**1** Download keycloak-demo TAR.GZ distribution of version 1.9.0.CR1 or newer and put this ZIP file to subdirectory `keycloak-dist`
 
-**2)**  Install docker on your laptop if you not already have it. Then if you want, you can build docker image by yourself with command:
+**2** Copy directory with OpenJDK8 to `keycloak-dist` directory under path `openjdk8` . Assumption is that `keycloak-dist/openjdk8/bin/java` is java executible.
+
+**3)**  Install docker on your laptop if you not already have it. Then if you want, you can build docker image by yourself with command:
 
 ```
 docker build -t keycloak-freeipa-server .
 ```
 
-So if you followed this and build the image by yourself, replace image name `mposolda/keycloak-freeipa-server:1.7.0.CR1` with your name `keycloak-freeipa-server` in later steps. 
+So if you followed this and build the image by yourself, replace image name `mposolda/keycloak-freeipa-server:1.9.0.CR1` with your name `keycloak-freeipa-server` in later steps. 
 
 
 Running docker image
 --------------------
 
-**1)** Install docker on your laptop if you not already have it. Then run docker image `mposolda/keycloak-freeipa-server:1.7.0.CR1`. You need to expose kerberos ports 
+**1)** Install docker on your laptop if you not already have it. Then run docker image `mposolda/keycloak-freeipa-server:1.9.0.CR1`. You need to expose kerberos ports 
 and also HTTP port of Keycloak server. It's also good to expose LDAP server port (so you can connect remotely to LDAP) and Keycloak debugger port (if you want remote Keycloak debugging 
 from your IDE).
 
@@ -36,9 +38,15 @@ More lines are just for easier readability, but whole command should be single l
 ```
 docker run --name keycloak-freeipa-server-container -ti -h ipa.example.test 
 -e PASSWORD=Secret123 -v /tmp/ipa-data:/data -p 20088:88 -p 20088:88/udp -p 29080:9080 
--p 20389:389 -p 28787:8787 mposolda/keycloak-freeipa-server:1.7.0.CR1
+-p 20389:389 -p 28787:8787 mposolda/keycloak-freeipa-server:1.9.0.CR1
 ```
 
+If you want to access FreeIPA admin console, you may expose also port 80 and 443, but it seems that you need to expose them "unmapped" to your machine. Hence you
+will need to run above command with `sudo` and make sure the ports 80 and 443 are free on your machine (no Apache HTTPD or other web server running on your local machine). So then you can use:
+```
+-p 80:80 -p 443:443
+```
+ 
 **2)** You will need to access keycloak via `ipa.example.test` server as this matches to HTTP service kerberos principal. In linux you can just put this line to `/etc/hosts` file (on your machine, not docker container):
 
 ```
