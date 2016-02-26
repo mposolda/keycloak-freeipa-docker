@@ -11,7 +11,7 @@ Building docker image
 ---------------------
 If you want, you can build docker image by yourself. But you can skip this step and use pre-builded image `mposolda/keycloak-freeipa-server:1.9.0.CR1` . If you're going to build it by yourself you need to:
 
-**1** Download keycloak-demo TAR.GZ distribution of version 1.9.0.CR1 or newer and put this ZIP file to subdirectory `keycloak-dist`
+**1** Download keycloak-demo TAR.GZ distribution of version 1.9.0.CR1 or newer and put this TAR.GZ file to subdirectory `keycloak-dist`
 
 **2** Copy directory with OpenJDK8 to `keycloak-dist` directory under path `openjdk8` . Assumption is that `keycloak-dist/openjdk8/bin/java` is java executible.
 
@@ -130,7 +130,7 @@ from the interactive terminal with docker. Then to start it again, you can use:
 docker start -ai keycloak-freeipa-server-container
 ```
 
-The startup will be quite fast as FreeIPA and Keycloak are already finished now.
+The startup will be quite fast as FreeIPA and Keycloak setup are already finished now.
 
 
 
