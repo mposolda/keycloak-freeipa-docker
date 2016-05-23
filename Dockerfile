@@ -1,4 +1,4 @@
-FROM adelton/freeipa-server:fedora-20
+FROM adelton/freeipa-server:fedora-23
 
 RUN mkdir /keycloak-work
 ADD keycloak-dist /keycloak-work/keycloak-dist
