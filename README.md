@@ -37,7 +37,7 @@ More lines are just for easier readability, but whole command should be single l
 
 ```
 docker run --name keycloak-freeipa-server-container -ti -h ipa.example.test 
--e PASSWORD=Secret123 -v /tmp/ipa-data:/data -p 20088:88 -p 20088:88/udp -p 29080:9080 
+-e PASSWORD=Secret123 -v /tmp/ipa-data/data -p 20088:88 -p 20088:88/udp -p 29080:9080 
 -p 20389:389 -p 28787:8787 mposolda/keycloak-freeipa-server:1.9.0.CR1
 ```
 
