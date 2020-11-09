@@ -78,7 +78,7 @@ Once client is installed, you can configure Kerberos client configuration file (
 
 **4)** Finally configure your browser to participate in Kerberos/SPNEGO authentication flow. You need to allow domain `ipa.example.test` to be trusted. Exact steps are again browser dependent. 
 
-For Firefox see for example [http://www.microhowto.info/howto/configure_firefox_to_authenticate_using_spnego_and_kerberos.html](http://www.microhowto.info/howto/configure_firefox_to_authenticate_using_spnego_and_kerberos.html) . URI `ipa.example.test` must be allowed in `network.negotiate-auth.trusted-uris` config option. 
+For Firefox see for example [https://www.adelton.com/docs/idm/enable-kerberos-in-firefox](https://www.adelton.com/docs/idm/enable-kerberos-in-firefox) . URI `ipa.example.test` must be allowed in `network.negotiate-auth.trusted-uris` config option. 
 
 For Chrome, you just need to run the browser with command similar to this (more details in Chrome documentation):
 
